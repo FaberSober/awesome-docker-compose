@@ -4,9 +4,9 @@ services:
   nexus:
     image: sonatype/nexus3
     volumes:
-      - "nexus-data:/nexus-data"
+      - "./data:/nexus-data"
     ports:
       - "8081:8081"
   
 volumes:
-  nexus-data: {}
+  data: {}
