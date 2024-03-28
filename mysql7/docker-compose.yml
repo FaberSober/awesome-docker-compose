@@ -1,0 +1,23 @@
+version: '3.1'
+
+services:
+
+  mysqldb:
+    image: mysql:5.7.40
+    container_name: mysql_container
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - TZ=Asis/Shanghai
+      - character-set-server=utf8mb4
+      - collation-server=utf8mb4_unicode_ci
+      - character-set-client-handshake=FALSE
+      - max_allowed_packet=1048576000
+      - lower_case_table_names=1
+      - wait_timeout=288000
+    volumes:
+      - ./conf:/etc/mysql/conf.d
+      - ./logs:/logs
+      - ./data:/var/lib/mysql

@@ -1,0 +1,122 @@
+version: "2"
+
+services:
+  zookeeper:
+    image: docker.io/bitnami/zookeeper:3.8
+    ports:
+      - '2181:2181'
+      - '18080:8080'
+    volumes:
+      - './data/zookeeper:/bitnami/zookeeper'
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    networks:
+      - kafka
+
+  kafka0:
+    image: docker.io/bitnami/kafka:3.5
+    ports:
+      # - "9092:9092"
+      - "9093:9093"
+    depends_on:
+      - zookeeper
+    volumes:
+      - './data/kafka0:/bitnami/kafka'
+      - './logs/kafka0:/tmp/kafka_mounts/logs'
+      - './config/kafka0/consumer.properties:/opt/bitnami/kafka/config/consumer.properties'
+      # - './config/kafka/server.properties:/bitnami/kafka/config/server.properties'
+    environment:
+      - KAFKA_ENABLE_KRAFT=no
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_CFG_BROKER_ID=0
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=INTERNAL://:9092,EXTERNAL://0.0.0.0:9093
+      # 如果从别的主机连接kafka，请将localhost改成docker的宿主机IP
+      - KAFKA_CFG_ADVERTISED_LISTENERS=INTERNAL://kafka0:9092,EXTERNAL://192.168.1.109:9093
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=INTERNAL
+      - KAFKA_CFG_LOG_DIRS=/tmp/kafka_mounts/logs
+    networks:
+      - kafka
+
+  kafka1:
+    image: docker.io/bitnami/kafka:3.5
+    ports:
+      # - "9092:9092"
+      - "9094:9094"
+    depends_on:
+      - zookeeper
+    volumes:
+      - './data/kafka1:/bitnami/kafka'
+      - './logs/kafka1:/tmp/kafka_mounts/logs'
+      - './config/kafka1/consumer.properties:/opt/bitnami/kafka/config/consumer.properties'
+      # - './config/kafka/server.properties:/bitnami/kafka/config/server.properties'
+    environment:
+      - KAFKA_ENABLE_KRAFT=no
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_CFG_BROKER_ID=1
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=INTERNAL://:9092,EXTERNAL://0.0.0.0:9094
+      # 如果从别的主机连接kafka，请将localhost改成docker的宿主机IP
+      - KAFKA_CFG_ADVERTISED_LISTENERS=INTERNAL://kafka1:9092,EXTERNAL://192.168.1.109:9094
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=INTERNAL
+      - KAFKA_CFG_LOG_DIRS=/tmp/kafka_mounts/logs
+    networks:
+      - kafka
+
+  kafka2:
+    image: docker.io/bitnami/kafka:3.5
+    ports:
+      # - "9092:9092"
+      - "9095:9095"
+    depends_on:
+      - zookeeper
+    volumes:
+      - './data/kafka2:/bitnami/kafka'
+      - './logs/kafka2:/tmp/kafka_mounts/logs'
+      - './config/kafka2/consumer.properties:/opt/bitnami/kafka/config/consumer.properties'
+      # - './config/kafka/server.properties:/bitnami/kafka/config/server.properties'
+    environment:
+      - KAFKA_ENABLE_KRAFT=no
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_CFG_BROKER_ID=2
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=INTERNAL://:9092,EXTERNAL://0.0.0.0:9095
+      # 如果从别的主机连接kafka，请将localhost改成docker的宿主机IP
+      - KAFKA_CFG_ADVERTISED_LISTENERS=INTERNAL://kafka2:9092,EXTERNAL://192.168.1.109:9095
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=INTERNAL
+      - KAFKA_CFG_LOG_DIRS=/tmp/kafka_mounts/logs
+    networks:
+      - kafka
+
+  kafka-ui:
+    container_name: kafka-ui
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - 8080:8080
+    depends_on:
+      - kafka0
+      - kafka1
+      - kafka2
+    environment:
+      DYNAMIC_CONFIG_ENABLED: 'true'
+      KAFKA_CLUSTERS_0_NAME: kafka0
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka0:9092
+      KAFKA_CLUSTERS_1_NAME: kafka1
+      KAFKA_CLUSTERS_1_BOOTSTRAPSERVERS: kafka1:9092
+      KAFKA_CLUSTERS_2_NAME: kafka2
+      KAFKA_CLUSTERS_2_BOOTSTRAPSERVERS: kafka2:9092
+    # volumes:
+    #   - ./kui/config.yml:/etc/kafkaui/dynamic_config.yaml
+    networks:
+      - kafka
+
+networks:
+  kafka:
+    driver: bridge
+
+volumes:
+  kafka_data:
+    driver: local

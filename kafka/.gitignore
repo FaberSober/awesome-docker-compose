@@ -1,0 +1,9 @@
+.idea
+.DS_Store
+.env
+nohup.out
+logs/*
+data/
+logs/
+zkui/*.log
+zkui/zkui.h2.db

@@ -1,0 +1,20 @@
+version: '3.3'
+
+services:
+
+  mysql:
+    # 指定镜像
+    image: farando/mysql:5.7
+    build: .
+    container_name: mysql
+    # depends_on:
+    #   - es-ik-nginx
+    ports:
+      # 端口映射
+      - 3306:3306
+    environment:
+      - TZ=$TZ
+      - MYSQL_ROOT_PASSWORD=123456
+      - character-set-client-handshake=FALSE
+      - max_allowed_packet=1048576000
+      - wait_timeout=288000
