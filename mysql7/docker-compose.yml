@@ -1,9 +1,7 @@
-version: '3.1'
-
 services:
 
   mysqldb:
-    image: mysql:5.7.40
+    image: mysql:5.7
     container_name: mysql_container
     restart: always
     ports:
