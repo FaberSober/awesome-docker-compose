@@ -1,19 +1,14 @@
-version: '3.3'
+version: '3.5'
+
 services:
   onlyoffice:
-    image: 'onlyoffice/documentserver:7.3'
-    container_name: onlyoffice-documentserver
+    image: 186184848/documentserver
+    container_name: onlyoffice
     # restart: always
     ports:
-      - '8081:80'
+      - 9997:80
+      - 9998:8000
     environment:
       - JWT_SECRET=faber@JWT#1256
     volumes:
       - './data:/data'
-    # command: 'redis-server --requirepass fa@redis#1276'
-    networks:
-      - onlyoffice
-
-networks:
-  onlyoffice:
-    driver: bridge
