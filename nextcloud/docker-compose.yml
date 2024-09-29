@@ -1,0 +1,11 @@
+version: '3.5'
+
+services:
+  app:
+    image: nextcloud
+    restart: always
+    container_name: nextcloud_core
+    ports:
+      - 8090:80
+    volumes:
+      - ./data:/var/www/html:rw
