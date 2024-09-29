@@ -11,3 +11,10 @@ services:
       TZ: Asia/Shanghai
     volumes:
       - "./site:/var/www/html"      #./site是站点目录位置，可以修改
+
+  kodoffice:
+    image: kodcloud/kodoffice:7.4.1.1
+    container_name: kodoffice
+    restart: always
+    ports:
+      - 8090:80
