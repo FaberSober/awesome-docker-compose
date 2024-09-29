@@ -4,3 +4,5 @@
 nohup.out
 logs/*
 data/
+db/
+site/
