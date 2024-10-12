@@ -1,0 +1,13 @@
+version: '3.5'
+
+services:
+  kkFileView:
+    container_name: kkFileView
+    #官方镜像
+    #image: keking/kkfileview:4.1.0
+    image: umlx/kkfileview:4.4.0
+    ports:
+      - 18080:8012
+    restart: always
+    extra_hosts:
+      - "xxx.xxx.com:172.17.0.1"
