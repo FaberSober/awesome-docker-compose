@@ -1,0 +1,21 @@
+version: '3.5'
+
+# docker run -d --name zlm --restart=always 
+# -p 1935:1935 -p 880:80 -p 554:554 -p 10000:10000 -p 10000:10000/udp 
+# -e TZ="Asia/Shanghai" zlmediakit/zlmediakit:master
+services:
+  zlm:
+    image: 'zlmediakit/zlmediakit:master'
+    container_name: zlm
+    restart: always
+    ports:
+      - '1935:1935'
+      - '880:80'
+      - '554:554'
+      - '10000:10000'
+      - '10000:10000/udp'
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - './log:/var/log/taos'
+      - './data:/var/lib/taos'

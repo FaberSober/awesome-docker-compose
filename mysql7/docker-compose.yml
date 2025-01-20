@@ -8,7 +8,7 @@ services:
       - "3306:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=123456
-      - TZ=Asis/Shanghai
+      - TZ=Asia/Shanghai
       - character-set-server=utf8mb4
       - collation-server=utf8mb4_unicode_ci
       - character-set-client-handshake=FALSE
