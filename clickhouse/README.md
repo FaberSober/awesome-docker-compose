@@ -37,3 +37,23 @@ networks:
 
 # 在docker-compose.yaml文件部署ck
 docker compose up -d
+
+
+## connect
+```
+./clickhouse client --host 127.0.0.1 \
+--secure --port c \
+--user default \
+--password 123456
+
+./clickhouse client --host 127.0.0.1 --port 9000 --password '123456'
+
+
+./clickhouse client --host 192.168.5.7 --port 18759 --password '103tiger'
+./clickhouse client --host 192.168.5.7 --port 18760 --user default --password '103tiger'
+
+curl --user 'default:123456' \
+  --data-binary 'SELECT 1' \
+  http://127.0.0.1:8123
+```
+
