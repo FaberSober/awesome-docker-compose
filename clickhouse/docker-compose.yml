@@ -1,0 +1,20 @@
+#version: '3.8'
+
+services:
+  clickhouse:
+    image: clickhouse/clickhouse-server:latest
+    container_name: ck
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    volumes:
+      - ./conf/config.xml:/etc/clickhouse-server/config.xml
+      - ./conf/users.xml:/etc/clickhouse-server/users.xml
+      - ./data:/var/lib/clickhouse
+    networks:
+      - clickhouse
+    restart: always
+
+networks:
+  clickhouse:
+    driver: bridge

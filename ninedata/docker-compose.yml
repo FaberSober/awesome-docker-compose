@@ -1,0 +1,18 @@
+#version: '3.8'
+
+services:
+  ninedata:
+    image: swr.cn-east-3.myhuaweicloud.com/ninedata/ninedata:latest
+    container_name: ninedata
+    ports:
+      - "9999:9999"
+    volumes:
+      - ./data:/u01
+    networks:
+      - ninedata
+    restart: always
+    privileged: true
+
+networks:
+  ninedata:
+    driver: bridge
