@@ -38,6 +38,17 @@ networks:
 # 在docker-compose.yaml文件部署ck
 docker compose up -d
 
+## 修改密码
+路径：/etc/clickhouse-server/users.xml
+```
+<passwrod>123456</passwrod>
+```
+
+## 修改监听
+路径：/etc/clickhouse-server/config.xml
+```
+<listen_host>::</listen_host>
+```
 
 ## connect
 ```
