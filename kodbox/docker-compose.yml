@@ -11,6 +11,9 @@ services:
       TZ: Asia/Shanghai
     volumes:
       - "./site:/var/www/html"      #./site是站点目录位置，可以修改
+    dns:
+     - 8.8.8.8
+     - 8.8.4.4
 
   kodoffice:
     image: kodcloud/kodoffice:7.4.1.1
@@ -18,3 +21,6 @@ services:
     restart: always
     ports:
       - 8090:80
+    dns:
+     - 8.8.8.8
+     - 8.8.4.4

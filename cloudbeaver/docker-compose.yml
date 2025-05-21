@@ -7,4 +7,8 @@ services:
     volumes:
       - ./workspace:/opt/cloudbeaver/workspace
     restart: always
-
+    #extra_hosts:
+      #- "dwardserver1.dward.cn:172.17.0.1"
+    dns:
+     - 8.8.8.8
+     - 8.8.4.4
