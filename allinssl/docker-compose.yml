@@ -1,5 +1,5 @@
 services:
-  clickhouse:
+  allinssl:
     image: allinssl/allinssl:latest
     container_name: allinssl
     ports:
