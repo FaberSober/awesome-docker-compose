@@ -1,0 +1,14 @@
+services:
+  clickhouse:
+    image: allinssl/allinssl:latest
+    container_name: allinssl
+    ports:
+      - "7979:8888"
+    environment:
+      - ALLINSSL_USER=allinssl
+      - ALLINSSL_PWD=allinssldocker
+      - ALLINSSL_URL=allinssl
+    volumes:
+      - ./data:/www/allinssl/data
+    restart: always
+
