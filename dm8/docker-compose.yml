@@ -1,0 +1,18 @@
+services:
+  dm8:
+    image: sizx/dm8:1-2-128-22.08.04-166351-20005-CTM
+    container_name: dm8
+    ports:
+      - "5236:5236"
+    restart: always
+    privileged: true  # 授予特权（需内核操作）
+    environment:
+      - PAGE_SIZE=16
+      - UNICODE_FLAG=1
+      - LENGTH_IN_CHAR=1
+      - CASE_SENSITIVE=0
+      - SYSDBA_PWD=123abc!@#
+      - LD_LIBRARY_PATH=/opt/dmdbms/bin
+      - INSTANCE_NAME=dm8_instance
+    volumes:
+      - ./data:/home/dmdba/data
