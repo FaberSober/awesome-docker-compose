@@ -15,4 +15,6 @@ services:
       - LD_LIBRARY_PATH=/opt/dmdbms/bin
       - INSTANCE_NAME=dm8_instance
     volumes:
-      - ./data:/home/dmdba/data
+      - ./data:/opt/dmdbms/data
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
