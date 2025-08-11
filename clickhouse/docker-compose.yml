@@ -8,7 +8,7 @@ services:
       - "8123:8123"
       - "9000:9000"
     environment:
-      # - CLICKHOUSE_USER=root
+      - CLICKHOUSE_USER=root
       - CLICKHOUSE_PASSWORD=103tiger
     volumes:
       - ./conf/config.xml:/etc/clickhouse-server/config.xml
