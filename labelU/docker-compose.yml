@@ -1,0 +1,37 @@
+version: '3.3'
+
+services:
+  labelu-mysql:
+    image: mysql:8.4
+    container_name: labelu-mysql
+    restart: unless-stopped
+    environment:
+      # 只作为示例，不要在公网环境使用这些默认值，也不要在docker-compose.yml文件中明文写入密码
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpass}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-labeludb}
+      MYSQL_USER: ${MYSQL_USER:-labelu}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-labelupass}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./conf.d:/etc/mysql/conf.d
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      
+  labelu:
+    # 指定镜像
+    image: farando/labelu-mysql:1.0.0
+    build: .
+    container_name: labelu
+    ports:
+      # 端口映射
+      - 18757:8000
+    environment:
+     - DATABASE_URL=mysql://labelu:labelupass@labelu-mysql:3306/labeludb
+    depends_on:
+      - labelu-mysql
+
+volumes:
+  mysql_data:
