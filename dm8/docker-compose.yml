@@ -3,7 +3,7 @@ services:
     image: sizx/dm8:1-2-128-22.08.04-166351-20005-CTM
     container_name: dm8
     ports:
-      - "5236:5236"
+      - "15236:5236"
     restart: always
     privileged: true  # 授予特权（需内核操作）
     environment:
@@ -14,7 +14,8 @@ services:
       - SYSDBA_PWD=123abc!@#
       - LD_LIBRARY_PATH=/opt/dmdbms/bin
       - INSTANCE_NAME=dm8_instance
+      - TZ=Asia/Shanghai
     volumes:
       - ./data:/opt/dmdbms/data
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
+      #- /etc/localtime:/etc/localtime:ro
+      #- /etc/timezone:/etc/timezone:ro
