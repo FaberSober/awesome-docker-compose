@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  databasus:
+    image: databasus/databasus:latest          # 或者指定版本如 :v3.19.2
+    container_name: databasus
+    restart: unless-stopped
+    ports:
+      - "4005:4005"                             # 默认 Web 界面端口是 4005，可改成你喜欢的如 8080:4005
+    volumes:
+      - databasus-data:/databasus-data          # 持久化配置、任务历史、凭证等
+      # 可选：如果你想把备份文件也存本地（而不是只用 S3 等外部存储）
+      # - ./backups:/backups
+    # environment:
+      # 可选环境变量（大部分在 Web 界面配置，这里只放关键的）
+      # TZ: Asia/Hong_Kong                      # 时区，根据你的位置调整
+      # DATASUS_PORT: 4005                      # 如果改端口需对应
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:4005/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+volumes:
+  databasus-data:
