@@ -1,0 +1,11 @@
+services:
+  logviewer:
+    build: .
+    container_name: logviewer
+    ports:
+      - "8111:8111"
+    volumes:
+      # 修改为你的日志目录
+      - /Users/test/code/my/fa-admin/fa-antd-admin-submodule/log:/logs:ro
+      - ./config.conf:/opt/logviewer/config.conf
+    restart: unless-stopped
