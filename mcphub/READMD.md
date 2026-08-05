@@ -1,0 +1,1 @@
+https://www.mcphub.app/zh

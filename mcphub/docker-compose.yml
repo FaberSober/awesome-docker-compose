@@ -1,0 +1,33 @@
+name: fa-ai-mcphub
+
+services:
+  mcphub:
+    image: samanhappy/mcphub:latest
+    container_name: mcphub
+    restart: unless-stopped
+    init: true
+    ports:
+      - "${MCPHUB_BIND_IP:-127.0.0.1}:${MCPHUB_PORT:-3000}:3000"
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      TZ: "${TZ:-Asia/Shanghai}"
+      ADMIN_PASSWORD: "${MCPHUB_ADMIN_PASSWORD:?请在 .env 中设置 MCPHUB_ADMIN_PASSWORD}"
+      JWT_SECRET: "${MCPHUB_JWT_SECRET:?请在 .env 中设置 MCPHUB_JWT_SECRET}"
+      JWT_EXPIRES_IN: "${MCPHUB_JWT_EXPIRES_IN:-24h}"
+    volumes:
+      - ./data:/app/data
+    healthcheck:
+      test:
+        - CMD
+        - wget
+        - --quiet
+        - --tries=1
+        - --spider
+        - http://localhost:3000/health
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    security_opt:
+      - no-new-privileges:true
