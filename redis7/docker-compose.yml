@@ -6,6 +6,8 @@ services:
     #restart: always
     ports:
       - '6379:6379'
+    environment:
+      - TZ=Asia/Shanghai
     volumes:
       - './conf:/usr/local/etc/redis'
       - './data:/data'
