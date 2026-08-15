@@ -1,0 +1,12 @@
+services:
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: fa-ai-qdrant
+    restart: unless-stopped
+    ports:
+      - "6333:6333" # HTTP API
+      - "6334:6334" # gRPC API
+    volumes:
+      - ./data/qdrant:/qdrant/storage
+    environment:
+      QDRANT__SERVICE__API_KEY: "qj4KLYb/IF+EaO03RVtJ6uQAZoZunXqUFdimEZujkp6f2uyonFNJls5vsjyIJO9j"

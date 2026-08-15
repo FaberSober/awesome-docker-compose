@@ -1,0 +1,69 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: affine_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: affine
+      POSTGRES_PASSWORD: affine_password
+      POSTGRES_DB: affine
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    networks:
+      - affine-net
+
+  redis:
+    image: redis:7
+    container_name: affine_redis
+    restart: always
+    volumes:
+      - ./data/redis:/data
+    networks:
+      - affine-net
+
+  minio:
+    image: minio/minio:latest
+    container_name: affine_minio
+    restart: always
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./data/minio:/data
+    networks:
+      - affine-net
+
+  affine:
+    image: ghcr.io/toeverything/affine:stable
+    container_name: affine_app
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+      - minio
+    ports:
+      - "3010:3010"
+    environment:
+      # 数据库连接字符串（示例）
+      DATABASE_URL: "postgresql://affine:affine_password@postgres:5432/affine?sslmode=disable"
+      REDIS_URL: "redis://redis:6379"
+      # 用 MinIO 作为 S3 兼容存储（示例变量名，视 affine 版本略有差异）
+      S3_ENDPOINT: "http://minio:9000"
+      S3_ACCESS_KEY: "minioadmin"
+      S3_SECRET_KEY: "minioadmin"
+      S3_BUCKET: "affine-storage"
+      # 站点外部访问 URL（用于生成链接 / callback）
+      VIRTUAL_HOST: "http://localhost:3010"
+    volumes:
+      - ./data/affine:/app/data
+    networks:
+      - affine-net
+
+networks:
+  affine-net:
+    driver: bridge

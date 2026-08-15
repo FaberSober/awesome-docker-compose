@@ -1,0 +1,16 @@
+services:
+  redis5:
+    image: redis:5
+    container_name: redis5
+    # restart: always
+    ports:
+      # 端口映射
+      - 6379:6379
+    volumes:
+      # 目录映射
+      - "./conf:/usr/local/etc/redis"
+      - "./data:/data"
+    command:
+      # 执行的命令
+      redis-server
+

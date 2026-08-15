@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  timescaledb:
+    image: timescale/timescaledb-ha:pg18.1-ts2.23.0-all
+    container_name: timescaledb
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: mydb
+      # POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      # timescaledb-ha使用的是/home/postgres/pgdata/data作为数据目录
+      # - ./data:/home/postgres/pgdata/data
+      # Windows使用 Docker 管理的“具名卷（Named Volume）”.TimescaleDB HA (High Availability) 镜像。这个镜像（基于 Patroni）对数据目录的权限要求极高，必须是 0700（仅所有者可读写）。
+      - pgdata:/home/postgres/pgdata/data
+      # - ./data:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d
+      - ./conf/postgresql.conf:/etc/postgresql/postgresql.conf
+    command: >
+      postgres -c config_file=/etc/postgresql/postgresql.conf
+    restart: always
+
+# 2. 在文件底部添加这一块
+volumes:
+  pgdata:

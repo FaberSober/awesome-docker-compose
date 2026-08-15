@@ -1,0 +1,11 @@
+-- TimescaleDB 开启
+CREATE EXTENSION IF NOT EXISTS timescaledb;
+
+-- PostGIS
+CREATE EXTENSION IF NOT EXISTS postgis;
+CREATE EXTENSION IF NOT EXISTS postgis_topology;
+
+-- 常用扩展（可选）
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS hstore;
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements;

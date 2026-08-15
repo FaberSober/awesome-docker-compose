@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    restart: unless-stopped
+    environment:
+      - WEBSOCKET_ENABLED=true  # 开启 WebSocket 支持
+      - SIGNUPS_ALLOWED=true    # 允许用户注册，初始设置完成并注册账号后，建议改为 false 以保证安全
+      - ADMIN_TOKEN=103tiger # 用于访问 /admin 管理界面的安全 Token (建议使用 argon2 生成)
+      - DOMAIN="http://localhost:8080"
+      # - ROCKET_TLS="{certs=\"\",key=\"\"}"
+      # - LOG_LEVEL="warn"
+    volumes:
+      - ./vw-data:/data         # 将容器内的数据目录持久化到当前目录下的 vw-data 文件中
+    ports:
+      - "8080:80"               # 宿主机端口:容器端口 (可以根据需要修改宿主机端口 8080)
+      # - "3012:3012"           # 如果使用较老版本的配置，可能需要映射 WebSocket 端口，新版本已经统一使用 80 端口处理 WebSocket
