@@ -1,0 +1,26 @@
+services:
+  oracle11g:
+    image: gvenzl/oracle-xe:11.2.0.2-slim
+    container_name: oracle11g
+    restart: unless-stopped
+
+    ports:
+      - "1521:1521"
+
+    environment:
+      # SYS 和 SYSTEM 用户密码
+      ORACLE_PASSWORD: Oracle123456
+
+    volumes:
+      # Oracle 11g XE 数据持久化目录
+      - oracle11g-data:/u01/app/oracle/oradata
+
+    healthcheck:
+      test: ["CMD", "healthcheck.sh"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 60s
+
+volumes:
+  oracle11g-data:
